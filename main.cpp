@@ -104,6 +104,7 @@ int main(int, char**)
     bool written = false;
     bool load = false;
     bool loaded = false;
+    bool loadBus = false;
     bool keypad = false;
     int selected = -1;
     bool first = false;
@@ -140,15 +141,15 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(285, 280), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(700, 135), ImGuiCond_FirstUseEver);
 
-            ImGui::Begin("Error", &done);
-            ImGui::Text("File ethercatBus.json was not found.\n"
+            ImGui::Begin("Error with the Bus", &done);
+            ImGui::Text("Error with ethercatBus.json.\n"
                         "This means either there are no adapters with devices on the Bus or ReadBus.exe failed to run.\n"
                         "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n");
 
             if (ImGui::Button("Load File", ImVec2(100, 40)))
             {
                 fileDialogLoad.Open();
-                load = true;
+                loadBus = true;
             }
 
             ImGui::SameLine();
@@ -156,14 +157,14 @@ int main(int, char**)
             if (ImGui::Button("Close Program", ImVec2(100, 40)))
                 done = true;
 
-            if (load)
+            if (loadBus)
             {
                 fileDialogLoad.Display();
                 if (fileDialogLoad.HasSelected())
                 {
                     std::string file = fileDialogLoad.GetSelected().string();
                     ecatConfigurator.init(file);
-                    load = false;
+                    loadBus = false;
                     fileDialogLoad.Close();
                 }
             }
@@ -175,7 +176,7 @@ int main(int, char**)
             // We specify a default position/size in case there's no data in the .ini file.
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
             ImGui::SetNextWindowPos(ImVec2(2, 3), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(808, 650), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(808, 661), ImGuiCond_FirstUseEver);
 
             ImGui::Begin("Configurator");
 
@@ -240,99 +241,26 @@ int main(int, char**)
             ImGui::Checkbox("List All Adapters", &showAllAdapters);
 
             if (key.size())
-                ImGui::Checkbox("Assign Chutes Forward", &ecatConfigurator.adapterChutesDirection);
-
-            if (ImGui::Button("Transfer All Settings to be Written", ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
-            {
-                ecatConfigurator.transferSettings(key);
-                loaded = true;
-            }
-            if (loaded)
-            {
-                ImGui::SameLine();
-                if (ImGui::Button("Transfer Adapter Name to be Written", ImVec2(270, 40)))
-                    ecatConfigurator.currentAdapterName = key;
-            }
-
-            if (ImGui::Button("Load Settings", ImVec2(110, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
-            {
-                fileDialogLoad.Open();            
-                load = true;
-            }
-            if (loaded)                       // Buttons return true when clicked (most widgets return true when edited/activated)
-            {
-                ImGui::SameLine();
-                if (ImGui::Button("Save Settings", ImVec2(110, 40)))
-                {
-                    fileDialogWrite.Open();
-                    write = true;
-                }
-                
-            }
+                ImGui::Checkbox("Assign Chutes Forward", &ecatConfigurator.adapterChutesDirection);            
 
             if (ImGui::Button("Read the Bus Again", ImVec2(150, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            {
-                //for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-                //    items[n] = NULL;
                 ecatConfigurator.init();
-                ecatConfigurator.adapterDevices.clear();
-            }
-                        
+            ImGui::SameLine();                        
+            if (ImGui::Button("Load Bus File", ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
+                loadBus = true;
 
-            // Written this way so that the file browser window remains open until the user is done with it
-            if (write)
-            {
-                fileDialogWrite.Display();
-                if (fileDialogWrite.HasSelected())
-                {
-                    // Add ability to select destinantion and name of file to write
-                    std::string pwd = fileDialogWrite.GetPwd().string();
-                    //std::string file = fileDialogLoad.GetSelected().string();
-                    ecatConfigurator.writeSettings(pwd);
-                    written = true;
-                    fileDialogWrite.Close();
-                    write = false;
-                }            
-            }
-            else if (load)
+            if (loadBus)
             {
                 fileDialogLoad.Display();
                 if (fileDialogLoad.HasSelected())
                 {
                     std::string file = fileDialogLoad.GetSelected().string();
-                    if (ecatConfigurator.loadSettings(file))
-                        loaded = true;
-                    else
-                        error = true;
+                    ecatConfigurator.init(file);
+                    loadBus = false;
                     fileDialogLoad.Close();
-                    load = false;
-                }                
+                }
             }
-
-            // Window to let user know the file has been written
-            if (written)
-            {
-                ImGui::SetNextWindowPos(ImVec2(96, 155), ImGuiCond_FirstUseEver);
-                ImGui::SetNextWindowSize(ImVec2(191, 106), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Update", &written);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-                ImGui::Text("Your file has been saved.");
-                if (ImGui::Button("OK", ImVec2(60, 40)))
-                    written = false;
-                ImGui::End();
-            }
-
-            // Window to let user know the file has been loaded did not have the correct information
-            if (error)
-            {
-                ImGui::SetNextWindowPos(ImVec2(10, 169), ImGuiCond_FirstUseEver);
-                ImGui::SetNextWindowSize(ImVec2(433, 106), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Error", &error);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-                ImGui::Text("Your selected file does not contain the correct information.\n Please Try again with a different file.");
-                if (ImGui::Button("OK", ImVec2(60, 40)))
-                    error = false;
-                ImGui::End();
-            }
-
+           
             ImGui::Text("");
             ImGui::Text("Selected Adapter:");
                     
@@ -378,6 +306,93 @@ int main(int, char**)
 
                 if (!ecatConfigurator.adapterDevices[key].size())
                     ecatConfigurator.adapterDevices.erase(key);
+            }
+
+            ImGui::Text("");
+
+            if (ImGui::Button("Transfer All Settings to be Written", ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                ecatConfigurator.transferSettings(key);
+                loaded = true;
+            }
+
+            if (loaded)
+            {
+                ImGui::SameLine();
+                if (ImGui::Button("Transfer Adapter Name to be Written", ImVec2(270, 40)))
+                    ecatConfigurator.currentAdapterName = key;
+            }
+
+            if (ImGui::Button("Load Settings", ImVec2(110, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                fileDialogLoad.Open();
+                load = true;
+            }
+
+            if (loaded)                       // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                ImGui::SameLine();
+                if (ImGui::Button("Save Settings", ImVec2(110, 40)))
+                {
+                    fileDialogWrite.Open();
+                    write = true;
+                }
+
+            }
+
+            // Written this way so that the file browser window remains open until the user is done with it
+            if (write)
+            {
+                fileDialogWrite.Display();
+                if (fileDialogWrite.HasSelected())
+                {
+                    // Add ability to select destinantion and name of file to write
+                    std::string pwd = fileDialogWrite.GetPwd().string();
+                    //std::string file = fileDialogLoad.GetSelected().string();
+                    ecatConfigurator.writeSettings(pwd);
+                    written = true;
+                    fileDialogWrite.Close();
+                    write = false;
+                }
+            }
+            else if (load)
+            {
+                fileDialogLoad.Display();
+                if (fileDialogLoad.HasSelected())
+                {
+                    std::string file = fileDialogLoad.GetSelected().string();
+                    if (ecatConfigurator.loadSettings(file))
+                        loaded = true;
+                    else
+                        error = true;
+                    fileDialogLoad.Close();
+                    load = false;
+                }
+            }
+
+            // Window to let user know the file has been written
+            if (written)
+            {
+                ImGui::SetNextWindowPos(ImVec2(90, 381), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowSize(ImVec2(191, 106), ImGuiCond_FirstUseEver);
+                ImGui::Begin("Update", &written);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                ImGui::Text("Your file has been saved.");
+                if (ImGui::Button("OK", ImVec2(60, 40)))
+                    written = false;
+                ImGui::End();
+            }
+
+            // Window to let user know the file has been loaded did not have the correct information
+            if (error)
+            {
+                ImGui::SetNextWindowPos(ImVec2(10, 366), ImGuiCond_FirstUseEver);
+                ImGui::SetNextWindowSize(ImVec2(700, 119), ImGuiCond_FirstUseEver);
+                ImGui::Begin("Error", &error);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                ImGui::Text("Your selected file does not contain the correct information.\n"
+                            "Please Try again with a different file.");
+                if (ImGui::Button("OK", ImVec2(60, 40)))
+                    error = false;
+                ImGui::End();
             }
 
             if (loaded)
@@ -596,7 +611,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int numKeypad(int input, bool* p_open)
 {
-    ImGui::SetNextWindowPos(ImVec2(817, 434), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(817, 443), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(152, 221), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Keypad", p_open);
