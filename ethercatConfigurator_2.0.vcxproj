@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;__STDC_LIMIT_MACROS;%(PreprocessorDefinitions);__STDC_LIMIT_MACROS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Include;C:\git\ethercatConfigurator_2.0\SOEM\osal\win32;C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32;C:\git\ethercatConfigurator_2.0\SOEM\osal;C:\git\ethercatConfigurator_2.0\SOEM\soem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Lib\wpcap.lib;C:\git\ethercatConfigurator_2.0\SOEM\build\soem.lib;C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Lib\Packet.lib;Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;d3d9.lib;d3dcompiler.lib;dxgi.lib;C:\git\ethercatConfigurator_2.0\imgui\examples\libs\glfw\lib-vc2010-32\glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;d3d9.lib;d3dcompiler.lib;dxgi.lib;C:\git\ethercatConfigurator_2.0\imgui\examples\libs\glfw\lib-vc2010-32\glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
