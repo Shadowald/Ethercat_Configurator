@@ -247,7 +247,10 @@ int main(int, char**)
                 ecatConfigurator.init();
             ImGui::SameLine();                        
             if (ImGui::Button("Load Bus File", ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                fileDialogLoad.Open();
                 loadBus = true;
+            }                
 
             if (loadBus)
             {
