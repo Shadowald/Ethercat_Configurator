@@ -315,6 +315,8 @@ int main(int, char**)
 
             if (ImGui::Button("Transfer All Settings to be Written", ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
             {
+                ecatConfigurator.currentDevices.clear();
+                ecatConfigurator.currentAdapterName.clear();
                 ecatConfigurator.transferSettings(key);
                 loaded = true;
             }
@@ -403,8 +405,6 @@ int main(int, char**)
                 ImGui::Text("");
                 ImGui::Text("Data to be Written:");
                 ImGui::Text("Adapter Name: %s", ecatConfigurator.currentAdapterName.c_str());
-                //ImGui::SameLine;
-                //ImGui::Text("Assign Chutes Forward Value(1 = true, 0 = false): %d", ecatConfigurator.currentAdapterChutesDirection);
             }            
 
             if (loaded && ImGui::BeginTable("Data to be Written", 11, flags))
