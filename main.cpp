@@ -16,6 +16,16 @@
 #include <Windows.h>
 #include "ethercatConfigurator_2.0.h"
 
+//For translations
+#include <boost\locale.hpp>
+#ifndef GETTEXTSTRING 
+#define GETTEXTSTRING
+#define _(MsgId) boost::locale::gettext(MsgId).c_str()
+#define _p(Context,MsgId) boost::locale::pgettext(Context,MsgId).c_str()
+#define _n(MsgId1,MsgId2,N) boost::locale::ngettext(MsgId1,MsgId2,N).c_str()
+#define _np(Context,MsgId1,MsgId2,N) boost::locale::ngettext(Context,MsgId1,MsgId2,N).c_str()
+#endif GETTEXTSTRING
+
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = nullptr;
@@ -92,9 +102,9 @@ int main(int, char**)
     ImGui::FileBrowser fileDialogWrite(ImGuiFileBrowserFlags_SelectDirectory);
 
     // Set browser properties
-    fileDialogLoad.SetTitle("File Explorer");
+    fileDialogLoad.SetTitle(_("File Explorer"));
     fileDialogLoad.SetTypeFilters({ ".json" });
-    fileDialogWrite.SetTitle("File Explorer");
+    fileDialogWrite.SetTitle(_("File Explorer"));
 
     // Main loop
     bool done = false;
@@ -141,12 +151,12 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(285, 280), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(700, 135), ImGuiCond_FirstUseEver);
 
-            ImGui::Begin("Error with the Bus", &done);
-            ImGui::Text("Error with ethercatBus.json.\n"
+            ImGui::Begin(_("Error with the Bus"), &done);
+            ImGui::Text(_("Error with ethercatBus.json.\n"
                         "This means either there are no adapters with devices on the Bus or ReadBus.exe failed to run.\n"
-                        "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n");
+                        "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n"));
 
-            if (ImGui::Button("Load File", ImVec2(100, 40)))
+            if (ImGui::Button(_("Load File"), ImVec2(100, 40)))
             {
                 fileDialogLoad.Open();
                 loadBus = true;
@@ -154,7 +164,7 @@ int main(int, char**)
 
             ImGui::SameLine();
 
-            if (ImGui::Button("Close Program", ImVec2(100, 40)))
+            if (ImGui::Button(_("Close Program"), ImVec2(100, 40)))
                 done = true;
 
             if (loadBus)
@@ -178,7 +188,7 @@ int main(int, char**)
             ImGui::SetNextWindowPos(ImVec2(2, 3), ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(808, 661), ImGuiCond_FirstUseEver);
 
-            ImGui::Begin("Configurator");
+            ImGui::Begin(_("Configurator"));
 
             // Using the generic BeginCombo() API, you have full control over how to display the combo contents.
             // (your selection data could be an index, a pointer to the object, an id for the object, a flag intrusively
@@ -188,7 +198,7 @@ int main(int, char**)
             {
                 static int item_current_idx = 0; // Here we store our selection data as an index.
                 const char* combo_preview_value = ecatConfigurator.allAdapters[item_current_idx].data();  // Pass in the preview value visible before opening the combo (it could be anything)
-                if (ImGui::BeginCombo("Avaliable Adapters", combo_preview_value))
+                if (ImGui::BeginCombo(_("Avaliable Adapters"), combo_preview_value))
                 {
 
                     for (int n = 0; n < ecatConfigurator.allAdapters.size(); n++)
@@ -218,7 +228,7 @@ int main(int, char**)
                 static int item_current_idx = 0; // Here we store our selection data as an index.
                 const char* combo_preview_value = adapters[item_current_idx].data(); //items[item_current_idx];  // Pass in the preview value visible before opening the combo (it could be anything)
                 key = adapters[item_current_idx];
-                if (ImGui::BeginCombo("Avaliable Adapters", combo_preview_value))
+                if (ImGui::BeginCombo(_("Avaliable Adapters"), combo_preview_value))
                 {
 
                     for (int n = 0; n < adapters.size(); n++)
@@ -238,15 +248,15 @@ int main(int, char**)
                 }
             }            
 
-            ImGui::Checkbox("List All Adapters", &showAllAdapters);
+            ImGui::Checkbox(_("List All Adapters"), &showAllAdapters);
 
             if (key.size())
-                ImGui::Checkbox("Assign Chutes Forward", &ecatConfigurator.adapterChutesDirection);            
+                ImGui::Checkbox(_("Assign Chutes Forward"), &ecatConfigurator.adapterChutesDirection);
 
-            if (ImGui::Button("Read the Bus Again", ImVec2(150, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Read the Bus Again"), ImVec2(150, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 ecatConfigurator.init();
             ImGui::SameLine();                        
-            if (ImGui::Button("Load Bus File", ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Load Bus File"), ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 fileDialogLoad.Open();
                 loadBus = true;
@@ -265,7 +275,7 @@ int main(int, char**)
             }
            
             ImGui::Text("");
-            ImGui::Text("Selected Adapter:");
+            ImGui::Text(_("Selected Adapter:"));
                     
             static ImGuiTableFlags flags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_NoHostExtendX;
 
@@ -273,14 +283,14 @@ int main(int, char**)
             {
                 // Display headers so we can inspect their interaction with borders.
                 // (Headers are not the main purpose of this section of the demo, so we are not elaborating on them too much. See other sections for details)
-                ImGui::TableSetupColumn("Name");
-                ImGui::TableSetupColumn("EEP Man");
-                ImGui::TableSetupColumn("EEP ID");
-                ImGui::TableSetupColumn("Address");
-                ImGui::TableSetupColumn("Index");
-                ImGui::TableSetupColumn("Alias");
-                ImGui::TableSetupColumn("Obits");
-                ImGui::TableSetupColumn("Ibits");
+                ImGui::TableSetupColumn(_("Name"));
+                ImGui::TableSetupColumn(_("EEP Man"));
+                ImGui::TableSetupColumn(_("EEP ID"));
+                ImGui::TableSetupColumn(_("Address"));
+                ImGui::TableSetupColumn(_("Index"));
+                ImGui::TableSetupColumn(_("Alias"));
+                ImGui::TableSetupColumn(_("Obits"));
+                ImGui::TableSetupColumn(_("Ibits"));
                 ImGui::TableHeadersRow();            
 
                 for (int row = 0; row < ecatConfigurator.adapterDevices[key].size(); row++)
@@ -313,7 +323,7 @@ int main(int, char**)
 
             ImGui::Text("");
 
-            if (ImGui::Button("Transfer All Settings to be Written", ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Transfer All Settings to be Written"), ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ecatConfigurator.currentDevices.clear();
                 ecatConfigurator.currentAdapterName.clear();
@@ -324,11 +334,11 @@ int main(int, char**)
             if (loaded)
             {
                 ImGui::SameLine();
-                if (ImGui::Button("Transfer Adapter Name to be Written", ImVec2(270, 40)))
+                if (ImGui::Button(_("Transfer Adapter Name to be Written"), ImVec2(270, 40)))
                     ecatConfigurator.currentAdapterName = key;
             }
 
-            if (ImGui::Button("Load Settings", ImVec2(110, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Load Settings"), ImVec2(110, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 fileDialogLoad.Open();
                 load = true;
@@ -337,7 +347,7 @@ int main(int, char**)
             if (loaded)                       // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ImGui::SameLine();
-                if (ImGui::Button("Save Settings", ImVec2(110, 40)))
+                if (ImGui::Button(_("Save Settings"), ImVec2(110, 40)))
                 {
                     fileDialogWrite.Open();
                     write = true;
@@ -380,9 +390,9 @@ int main(int, char**)
             {
                 ImGui::SetNextWindowPos(ImVec2(90, 381), ImGuiCond_FirstUseEver);
                 ImGui::SetNextWindowSize(ImVec2(191, 106), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Update", &written);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-                ImGui::Text("Your file has been saved.");
-                if (ImGui::Button("OK", ImVec2(60, 40)))
+                ImGui::Begin(_("Update"), &written);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                ImGui::Text(_("Your file has been saved."));
+                if (ImGui::Button(_("OK"), ImVec2(60, 40)))
                     written = false;
                 ImGui::End();
             }
@@ -392,9 +402,9 @@ int main(int, char**)
             {
                 ImGui::SetNextWindowPos(ImVec2(10, 366), ImGuiCond_FirstUseEver);
                 ImGui::SetNextWindowSize(ImVec2(700, 119), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Error", &error);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-                ImGui::Text("Your selected file does not contain the correct information.\n"
-                            "Please Try again with a different file.");
+                ImGui::Begin(_("Error"), &error);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                ImGui::Text(_("Your selected file does not contain the correct information.\n"
+                            "Please Try again with a different file."));
                 if (ImGui::Button("OK", ImVec2(60, 40)))
                     error = false;
                 ImGui::End();
@@ -403,24 +413,24 @@ int main(int, char**)
             if (loaded)
             {
                 ImGui::Text("");
-                ImGui::Text("Data to be Written:");
-                ImGui::Text("Adapter Name: %s", ecatConfigurator.currentAdapterName.c_str());
+                ImGui::Text(_("Data to be Written:"));
+                ImGui::Text(_("Adapter Name: %s"), ecatConfigurator.currentAdapterName.c_str());
             }            
 
-            if (loaded && ImGui::BeginTable("Data to be Written", 11, flags))
+            if (loaded && ImGui::BeginTable(_("Data to be Written"), 11, flags))
             {
                 // Display headers so we can inspect their interaction with borders.
-                ImGui::TableSetupColumn("Name");
-                ImGui::TableSetupColumn("EEP Man");
-                ImGui::TableSetupColumn("EEP ID");
-                ImGui::TableSetupColumn("Address");
-                ImGui::TableSetupColumn("Index");
-                ImGui::TableSetupColumn("Alias");
-                ImGui::TableSetupColumn("Obits");
-                ImGui::TableSetupColumn("Ibits");
-                ImGui::TableSetupColumn("Device Type", ImGuiTableColumnFlags_WidthFixed, 110.0f);
-                ImGui::TableSetupColumn("First Chute");
-                ImGui::TableSetupColumn("Last Chute");
+                ImGui::TableSetupColumn(_("Name"));
+                ImGui::TableSetupColumn(_("EEP Man"));
+                ImGui::TableSetupColumn(_("EEP ID"));
+                ImGui::TableSetupColumn(_("Address"));
+                ImGui::TableSetupColumn(_("Index"));
+                ImGui::TableSetupColumn(_("Alias"));
+                ImGui::TableSetupColumn(_("Obits"));
+                ImGui::TableSetupColumn(_("Ibits"));
+                ImGui::TableSetupColumn(_("Device Type"), ImGuiTableColumnFlags_WidthFixed, 110.0f);
+                ImGui::TableSetupColumn(_("First Chute"));
+                ImGui::TableSetupColumn(_("Last Chute"));
                 ImGui::TableHeadersRow();
 
                 for (int row = 0; row < ecatConfigurator.currentDevices.size(); row++)
@@ -446,7 +456,7 @@ int main(int, char**)
                     ImGui::Text("%d", ecatConfigurator.currentDevices[row].Ibits);
                     ImGui::TableNextColumn();
                     ImGui::PushItemWidth(-FLT_MIN);
-                    const char* types[] = { "NotDefined", "Chutes", "FlapsLamps", "Scales", "Inverter" };
+                    const char* types[] = { _("NotDefined"), _("Chutes"), _("FlapsLamps"), _("Scales"), _("Inverter") };
                     static int item_current_idx2 = 0; // Here we store our selection data as an index.
                     const char* combo_preview_value2 = types[static_cast<int>(ecatConfigurator.currentDevices[row].deviceType)];  // Pass in the preview value visible before opening the combo (it could be anything)
                     //ImGuiStyle::FramePadding = ImVec2(270, 40);

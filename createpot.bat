@@ -1,0 +1,6 @@
+dir /b/s "..\ethercatConfigurator_2.0\*.cpp" > "Translate.txt"
+dir /b/s "..\ethercatConfigurator_2.0\*.h" >> "Translate.txt"
+rem "c:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" --keyword=__ --keyword=__x --language=C++ --output=optisort.pot --from-code=utf-8 --files-from="Translate.txt"
+rem "c:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" --keyword=__ --keyword=__x --language=C++ --from-code=utf-8 --output-dir="." --directory="..\VisualC\" "C:\git\OptiSort\VisualC\NewMainCamera.cpp"
+rem "c:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" --language=C++ --output=optisort.pot "C:\git\OptiSort\VisualC\NewMainCamera.cpp" 
+"c:\Program Files (x86)\Poedit\GettextTools\bin\xgettext.exe" --keyword=_ --keyword=_p:1c,2 --keyword=_n:1,2 --keyword=_np:1c,2,3 --language=C++ --boost --from-code=utf-8  --output="ecat.pot" --files-from="Translate.txt"
