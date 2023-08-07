@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-03 13:42+0200\n"
-"PO-Revision-Date: 2023-08-03 14:49+0200\n"
+"PO-Revision-Date: 2023-08-07 11:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -20,11 +20,11 @@ msgstr ""
 #: C:\git\ethercatConfigurator_2.0\main.cpp:105
 #: C:\git\ethercatConfigurator_2.0\main.cpp:107
 msgid "File Explorer"
-msgstr ""
+msgstr "Datei-Explorer"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:154
 msgid "Error with the Bus"
-msgstr ""
+msgstr "Fehler mit dem Bus"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:155
 msgid ""
@@ -34,43 +34,48 @@ msgid ""
 "You can now either load a ethercatBus.json saved elsewhere on the system or "
 "close the program\n"
 msgstr ""
+"Fehler bei ethercatBus.json.\n"
+"Dies bedeutet, dass entweder keine Adapter mit Geräten auf dem Bus "
+"vorhanden sind oder ReadBus.exe nicht ausgeführt werden konnte.\n"
+"Sie können nun entweder eine an anderer Stelle auf dem System gespeicherte "
+"ethercatBus.json laden oder das Programm schließen\n"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:159
 msgid "Load File"
-msgstr ""
+msgstr "Datei laden"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:167
 msgid "Close Program"
-msgstr ""
+msgstr "Programm schließen"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:191
 msgid "Configurator"
-msgstr ""
+msgstr "Konfigurator"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:201
 #: C:\git\ethercatConfigurator_2.0\main.cpp:231
 msgid "Avaliable Adapters"
-msgstr ""
+msgstr "Verfügbare Adapter"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:251
 msgid "List All Adapters"
-msgstr ""
+msgstr "Alle Adapter auflisten"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:254
 msgid "Assign Chutes Forward"
-msgstr ""
+msgstr "Schächte zuweisen Vorwärts"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:256
 msgid "Read the Bus Again"
-msgstr ""
+msgstr "Lesen Sie den Bus noch einmal"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:259
 msgid "Load Bus File"
-msgstr ""
+msgstr "Busdatei laden"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:278
 msgid "Selected Adapter:"
-msgstr ""
+msgstr "Ausgewählter Adapter:"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:286
 #: C:\git\ethercatConfigurator_2.0\main.cpp:423
@@ -80,12 +85,12 @@ msgstr "Name"
 #: C:\git\ethercatConfigurator_2.0\main.cpp:287
 #: C:\git\ethercatConfigurator_2.0\main.cpp:424
 msgid "EEP Man"
-msgstr ""
+msgstr "EEP Man"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:288
 #: C:\git\ethercatConfigurator_2.0\main.cpp:425
 msgid "EEP ID"
-msgstr ""
+msgstr "EEP ID"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:289
 #: C:\git\ethercatConfigurator_2.0\main.cpp:426
@@ -114,27 +119,27 @@ msgstr "Ibits"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:326
 msgid "Transfer All Settings to be Written"
-msgstr ""
+msgstr "Alle zu schreibenden Einstellungen übertragen"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:337
 msgid "Transfer Adapter Name to be Written"
-msgstr ""
+msgstr "Transferadapter zu schreibender Name"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:341
 msgid "Load Settings"
-msgstr ""
+msgstr "Einstellungen laden"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:350
 msgid "Save Settings"
-msgstr ""
+msgstr "Einstellungen speichern"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:393
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:394
 msgid "Your file has been saved."
-msgstr ""
+msgstr "Ihre Datei wurde gespeichert."
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:395
 msgid "OK"
@@ -142,26 +147,28 @@ msgstr "OK"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:405
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:406
 msgid ""
 "Your selected file does not contain the correct information.\n"
 "Please Try again with a different file."
 msgstr ""
+"Die von Ihnen ausgewählte Datei enthält nicht die richtigen Informationen.\n"
+"Bitte versuchen Sie es erneut mit einer anderen Datei."
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:416
 msgid "Data to be Written:"
-msgstr ""
+msgstr "Zu schreibende Daten:"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:417
 #, c-format, boost-format
 msgid "Adapter Name: %s"
-msgstr ""
+msgstr "Adapter Name: %s"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:420
 msgid "Data to be Written"
-msgstr ""
+msgstr "Zu schreibende Daten"
 
 #: C:\git\ethercatConfigurator_2.0\main.cpp:431
 msgid "Device Type"
