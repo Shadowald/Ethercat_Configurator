@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-03 13:42+0200\n"
+"PO-Revision-Date: 2023-08-10 08:45+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:105
+#: C:\git\ethercatConfigurator_2.0\main.cpp:107
+msgid "File Explorer"
+msgstr "File Explorer"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:154
+msgid "Error with the Bus"
+msgstr "Error with the Bus"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:155
+msgid ""
+"Error with ethercatBus.json.\n"
+"This means either there are no adapters with devices on the Bus or ReadBus."
+"exe failed to run.\n"
+"You can now either load a ethercatBus.json saved elsewhere on the system or "
+"close the program\n"
+msgstr ""
+"Error with ethercatBus.json.\n"
+"This means either there are no adapters with devices on the Bus or ReadBus."
+"exe failed to run.\n"
+"You can now either load a ethercatBus.json saved elsewhere on the system or "
+"close the program\n"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:159
+msgid "Load File"
+msgstr "Load File"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:167
+msgid "Close Program"
+msgstr "Close Program"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:191
+msgid "Configurator"
+msgstr "Configurator"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:201
+#: C:\git\ethercatConfigurator_2.0\main.cpp:231
+msgid "Avaliable Adapters"
+msgstr "Avaliable Adapters"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:251
+msgid "List All Adapters"
+msgstr "List All Adapters"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:254
+msgid "Assign Chutes Forward"
+msgstr "Assign Chutes Forward"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:256
+msgid "Read the Bus Again"
+msgstr "Read the Bus Again"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:259
+msgid "Load Bus File"
+msgstr "Load Bus File"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:278
+msgid "Selected Adapter:"
+msgstr "Selected Adapter:"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:286
+#: C:\git\ethercatConfigurator_2.0\main.cpp:423
+msgid "Name"
+msgstr "Name"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:287
+#: C:\git\ethercatConfigurator_2.0\main.cpp:424
+msgid "EEP Man"
+msgstr "EEP Man"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:288
+#: C:\git\ethercatConfigurator_2.0\main.cpp:425
+msgid "EEP ID"
+msgstr "EEP ID"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:289
+#: C:\git\ethercatConfigurator_2.0\main.cpp:426
+msgid "Address"
+msgstr "Address"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:290
+#: C:\git\ethercatConfigurator_2.0\main.cpp:427
+msgid "Index"
+msgstr "Index"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:291
+#: C:\git\ethercatConfigurator_2.0\main.cpp:428
+msgid "Alias"
+msgstr "Alias"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:292
+#: C:\git\ethercatConfigurator_2.0\main.cpp:429
+msgid "Obits"
+msgstr "Obits"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:293
+#: C:\git\ethercatConfigurator_2.0\main.cpp:430
+msgid "Ibits"
+msgstr "Ibits"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:326
+msgid "Transfer All Settings to be Written"
+msgstr "Transfer All Settings to be Written"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:337
+msgid "Transfer Adapter Name to be Written"
+msgstr "Transfer Adapter Name to be Written"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:341
+msgid "Load Settings"
+msgstr "Load Settings"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:350
+msgid "Save Settings"
+msgstr "Save Settings"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:393
+msgid "Update"
+msgstr "Update"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:394
+msgid "Your file has been saved."
+msgstr "Your file has been saved."
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:395
+msgid "OK"
+msgstr "OK"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:405
+msgid "Error"
+msgstr "Error"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:406
+msgid ""
+"Your selected file does not contain the correct information.\n"
+"Please Try again with a different file."
+msgstr ""
+"Your selected file does not contain the correct information.\n"
+"Please Try again with a different file."
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:416
+msgid "Data to be Written:"
+msgstr "Data to be Written:"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:417
+#, c-format, boost-format
+msgid "Adapter Name: %s"
+msgstr "Adapter Name: %s"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:420
+msgid "Data to be Written"
+msgstr "Data to be Written"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:431
+msgid "Device Type"
+msgstr "Device Type"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:432
+msgid "First Chute"
+msgstr "First Chute"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:433
+msgid "Last Chute"
+msgstr "Last Chute"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:459
+msgid "NotDefined"
+msgstr "NotDefined"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:459
+msgid "Chutes"
+msgstr "Chutes"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:459
+msgid "FlapsLamps"
+msgstr "FlapsLamps"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:459
+msgid "Scales"
+msgstr "Scales"
+
+#: C:\git\ethercatConfigurator_2.0\main.cpp:459
+msgid "Inverter"
+msgstr "Inverter"
