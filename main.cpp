@@ -18,6 +18,8 @@
 
 //For translations
 #include <boost\locale.hpp>
+#include <boost/filesystem.hpp>
+
 #ifndef GETTEXTSTRING 
 #define GETTEXTSTRING
 #define _(MsgId) boost::locale::gettext(MsgId).c_str()
@@ -26,6 +28,8 @@
 #define _np(Context,MsgId1,MsgId2,N) boost::locale::ngettext(Context,MsgId1,MsgId2,N).c_str()
 #endif GETTEXTSTRING
 
+enum Language {ENGLISH, DEUTSCH};
+
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = nullptr;
@@ -33,6 +37,8 @@ static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
 static D3DPRESENT_PARAMETERS    g_d3dpp = {};
 
 CEthercatConfigurator ecatConfigurator;
+boost::locale::generator LocaleGenerator;
+boost::filesystem::path TranslationPath;
 
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
@@ -40,10 +46,18 @@ void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 int numKeypad(int input, bool* p_open);
+void setLanguage(Language _lang);
 
 // Main code
 int main(int, char**)
 {
+    // Prepare Translation paths
+    TranslationPath = boost::filesystem::current_path().parent_path();
+    TranslationPath = TranslationPath / "Translations";
+    TranslationPath.make_preferred();
+    LocaleGenerator.add_messages_domain("ecat");
+    LocaleGenerator.add_messages_path(TranslationPath.string());
+
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
@@ -149,9 +163,24 @@ int main(int, char**)
         if (!ecatConfigurator.adapterDevices.size())
         {
             ImGui::SetNextWindowPos(ImVec2(285, 280), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(700, 135), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(700, 170), ImGuiCond_FirstUseEver);
 
-            ImGui::Begin(_("Error with the Bus"), &done);
+            ImGui::Begin(_("Error with the Bus"), &done, ImGuiWindowFlags_MenuBar);
+
+            // Menu Bar
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu(_("Language")))
+                {
+                    if (ImGui::MenuItem("English")) {}
+                    //setLanguage(ENGLISH);
+                    if (ImGui::MenuItem("Deutsch"))
+                        setLanguage(DEUTSCH);
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenuBar();
+            }
+
             ImGui::Text(_("Error with ethercatBus.json.\n"
                         "This means either there are no adapters with devices on the Bus or ReadBus.exe failed to run.\n"
                         "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n"));
@@ -185,10 +214,24 @@ int main(int, char**)
         {
             // We specify a default position/size in case there's no data in the .ini file.
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
-            ImGui::SetNextWindowPos(ImVec2(2, 3), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(808, 661), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowPos(ImVec2(2, 4), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(808, 756), ImGuiCond_FirstUseEver);
 
-            ImGui::Begin(_("Configurator"));
+            ImGui::Begin(_("Configurator"), 0, ImGuiWindowFlags_MenuBar);
+
+            // Menu Bar
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu(_("Language")))
+                {
+                    if (ImGui::MenuItem("English")){}
+                        //setLanguage(ENGLISH);
+                    if (ImGui::MenuItem("Deutsch"))
+                        setLanguage(DEUTSCH);
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenuBar();
+            }
 
             // Using the generic BeginCombo() API, you have full control over how to display the combo contents.
             // (your selection data could be an index, a pointer to the object, an id for the object, a flag intrusively
@@ -624,7 +667,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int numKeypad(int input, bool* p_open)
 {
-    ImGui::SetNextWindowPos(ImVec2(817, 443), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(812, 539), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(152, 221), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Keypad", p_open);
@@ -690,6 +733,36 @@ int numKeypad(int input, bool* p_open)
     ImGui::End();
 
     return input;
+}
+
+void setLanguage(Language _lang)
+{
+    try 
+    {
+        switch (_lang)
+        {
+        case ENGLISH:
+            {
+                _putenv("LANGUAGE=en");
+                std::locale loc = LocaleGenerator("en.UTF-8");
+                std::locale::global(loc);
+            }
+            break;
+
+            case DEUTSCH:
+            {
+                _putenv("LANGUAGE=de");
+                std::locale loc = LocaleGenerator("de.UTF-8");
+                std::locale::global(loc);
+            }
+            break;
+        }        
+    }
+    catch (std::exception& E)
+    {
+        std::string Error = E.what();
+        throw (E);
+    }
 }
 
 /*
