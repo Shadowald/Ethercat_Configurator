@@ -17,8 +17,9 @@
 #include "ethercatConfigurator_2.0.h"
 
 //For translations
-#include <boost\locale.hpp>
+#include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
+#include <iostream>
 
 #ifndef GETTEXTSTRING 
 #define GETTEXTSTRING
@@ -40,6 +41,16 @@ CEthercatConfigurator ecatConfigurator;
 boost::locale::generator LocaleGenerator;
 boost::filesystem::path TranslationPath;
 
+//std::map<std::string, std::vector<const char>> translations;
+//std::vector<const char> english = { "Error with the Bus",
+//        "Language",
+//        "Error with ethercatBus.json.\n"
+//        "This means either there are no adapters with devices on the Bus or ReadBus.exe failed to run.\n"
+//        "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n",
+//        "Load File",
+//        "Close Program" };
+//std::vector<const char> deutsch;
+
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
@@ -51,13 +62,7 @@ void setLanguage(Language _lang);
 // Main code
 int main(int, char**)
 {
-    // Prepare Translation paths
-    TranslationPath = boost::filesystem::current_path().parent_path();
-    TranslationPath = TranslationPath / "Translations";
-    TranslationPath.make_preferred();
-    LocaleGenerator.add_messages_domain("ecat");
-    LocaleGenerator.add_messages_path(TranslationPath.string());
-
+    //boost::locale::generator LocaleGenerator;
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
@@ -90,6 +95,14 @@ int main(int, char**)
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX9_Init(g_pd3dDevice);
+
+    // Prepare Translation paths
+    TranslationPath = boost::filesystem::current_path();
+    TranslationPath = TranslationPath / "Translations";
+    TranslationPath.make_preferred();
+    LocaleGenerator.add_messages_path(TranslationPath.string());
+    LocaleGenerator.add_messages_domain("ecat");
+    std::locale::global(LocaleGenerator(""));
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -162,8 +175,10 @@ int main(int, char**)
         // Or statment is needed to keep code in this path until code has finished all necessary processes
         if (!ecatConfigurator.adapterDevices.size())
         {
-            ImGui::SetNextWindowPos(ImVec2(285, 280), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(700, 170), ImGuiCond_FirstUseEver);
+            loaded = false;
+
+            ImGui::SetNextWindowPos(ImVec2(186, 277), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(926, 170), ImGuiCond_FirstUseEver);
 
             ImGui::Begin(_("Error with the Bus"), &done, ImGuiWindowFlags_MenuBar);
 
@@ -173,7 +188,7 @@ int main(int, char**)
                 if (ImGui::BeginMenu(_("Language")))
                 {
                     if (ImGui::MenuItem("English")) {}
-                    //setLanguage(ENGLISH);
+                        setLanguage(ENGLISH);
                     if (ImGui::MenuItem("Deutsch"))
                         setLanguage(DEUTSCH);
                     ImGui::EndMenu();
@@ -193,7 +208,7 @@ int main(int, char**)
 
             ImGui::SameLine();
 
-            if (ImGui::Button(_("Close Program"), ImVec2(100, 40)))
+            if (ImGui::Button(_("Close Program"), ImVec2(140, 40)))
                 done = true;
 
             if (loadBus)
@@ -215,7 +230,7 @@ int main(int, char**)
             // We specify a default position/size in case there's no data in the .ini file.
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
             ImGui::SetNextWindowPos(ImVec2(2, 4), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(808, 756), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(855, 756), ImGuiCond_FirstUseEver);
 
             ImGui::Begin(_("Configurator"), 0, ImGuiWindowFlags_MenuBar);
 
@@ -224,8 +239,8 @@ int main(int, char**)
             {
                 if (ImGui::BeginMenu(_("Language")))
                 {
-                    if (ImGui::MenuItem("English")){}
-                        //setLanguage(ENGLISH);
+                    if (ImGui::MenuItem("English"))
+                        setLanguage(ENGLISH);
                     if (ImGui::MenuItem("Deutsch"))
                         setLanguage(DEUTSCH);
                     ImGui::EndMenu();
@@ -296,7 +311,7 @@ int main(int, char**)
             if (key.size())
                 ImGui::Checkbox(_("Assign Chutes Forward"), &ecatConfigurator.adapterChutesDirection);
 
-            if (ImGui::Button(_("Read the Bus Again"), ImVec2(150, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Read the Bus Again"), ImVec2(230, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 ecatConfigurator.init();
             ImGui::SameLine();                        
             if (ImGui::Button(_("Load Bus File"), ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -322,7 +337,7 @@ int main(int, char**)
                     
             static ImGuiTableFlags flags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_NoHostExtendX;
 
-            if (ImGui::BeginTable("Selected Adapter", 8, flags))
+            if (ImGui::BeginTable(_("Selected Adapter"), 8, flags))
             {
                 // Display headers so we can inspect their interaction with borders.
                 // (Headers are not the main purpose of this section of the demo, so we are not elaborating on them too much. See other sections for details)
@@ -366,7 +381,7 @@ int main(int, char**)
 
             ImGui::Text("");
 
-            if (ImGui::Button(_("Transfer All Settings to be Written"), ImVec2(270, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Transfer All Settings to be Written"), ImVec2(330, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ecatConfigurator.currentDevices.clear();
                 ecatConfigurator.currentAdapterName.clear();
@@ -381,7 +396,7 @@ int main(int, char**)
                     ecatConfigurator.currentAdapterName = key;
             }
 
-            if (ImGui::Button(_("Load Settings"), ImVec2(110, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button(_("Load Settings"), ImVec2(160, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 fileDialogLoad.Open();
                 load = true;
@@ -390,7 +405,7 @@ int main(int, char**)
             if (loaded)                       // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ImGui::SameLine();
-                if (ImGui::Button(_("Save Settings"), ImVec2(110, 40)))
+                if (ImGui::Button(_("Save Settings"), ImVec2(180, 40)))
                 {
                     fileDialogWrite.Open();
                     write = true;
@@ -667,10 +682,10 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int numKeypad(int input, bool* p_open)
 {
-    ImGui::SetNextWindowPos(ImVec2(812, 539), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(858, 539), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(152, 221), ImGuiCond_FirstUseEver);
 
-    ImGui::Begin("Keypad", p_open);
+    ImGui::Begin(_("Keypad"), p_open);
 
     if (ImGui::Button("<x", ImVec2(40, 40)))        // Buttons return true when clicked (most widgets return true when edited/activated)
     {
@@ -746,6 +761,7 @@ void setLanguage(Language _lang)
                 _putenv("LANGUAGE=en");
                 std::locale loc = LocaleGenerator("en.UTF-8");
                 std::locale::global(loc);
+
             }
             break;
 

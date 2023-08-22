@@ -16,6 +16,19 @@
 #   error "include imgui.h before this header"
 #endif
 
+//For translations
+#include <boost/locale.hpp>
+#include <boost/filesystem.hpp>
+#include <iostream>
+
+#ifndef GETTEXTSTRING 
+#define GETTEXTSTRING
+#define _(MsgId) boost::locale::gettext(MsgId).c_str()
+#define _p(Context,MsgId) boost::locale::pgettext(Context,MsgId).c_str()
+#define _n(MsgId1,MsgId2,N) boost::locale::ngettext(MsgId1,MsgId2,N).c_str()
+#define _np(Context,MsgId1,MsgId2,N) boost::locale::ngettext(Context,MsgId1,MsgId2,N).c_str()
+#endif GETTEXTSTRING
+
 using ImGuiFileBrowserFlags = int;
 
 enum ImGuiFileBrowserFlags_
@@ -194,7 +207,7 @@ inline ImGui::FileBrowser::FileBrowser(ImGuiFileBrowserFlags flags)
 
     inputNameBuf_->front() = '\0';
     inputNameBuf_->back() = '\0';
-    SetTitle("file browser");
+    SetTitle(_("File Explorer"));
     SetPwd(std::filesystem::current_path());
 
     typeFilters_.clear();
@@ -633,7 +646,7 @@ inline void ImGui::FileBrowser::Display()
 
     if (!(flags_ & ImGuiFileBrowserFlags_SelectDirectory))
     {
-        if (Button(" Load ", ImVec2(100, 33)) && !selectedFilenames_.empty())
+        if (Button(_(" Load "), ImVec2(100, 33)) && !selectedFilenames_.empty())
         {
             ok_ = true;
             CloseCurrentPopup();
@@ -641,7 +654,7 @@ inline void ImGui::FileBrowser::Display()
     }
     else
     {
-        if (Button(" Save ", ImVec2(100, 33)))
+        if (Button(_(" Save "), ImVec2(100, 33)))
         {
             ok_ = true;
             CloseCurrentPopup();
@@ -651,7 +664,7 @@ inline void ImGui::FileBrowser::Display()
     SameLine();
 
     bool shouldExit =
-        Button("cancel", ImVec2(100, 33)) || closeFlag_ ||
+        Button(_("Cancel"), ImVec2(100, 33)) || closeFlag_ ||
         ((flags_ & ImGuiFileBrowserFlags_CloseOnEsc) &&
             IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) &&
             IsKeyPressed(ImGuiKey_Escape));

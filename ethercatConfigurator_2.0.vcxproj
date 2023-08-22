@@ -91,13 +91,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__STDC_LIMIT_MACROS;%(PreprocessorDefinitions);__STDC_LIMIT_MACROS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Programmierung\boost\Boost_1_76_0_0;C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Include;C:\git\ethercatConfigurator_2.0\SOEM\osal\win32;C:\git\ethercatConfigurator_2.0\SOEM\osal;C:\git\ethercatConfigurator_2.0\SOEM\soem;C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Programmierung\boost\Boost_1_76_0_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Lib\wpcap.lib;C:\git\ethercatConfigurator_2.0\SOEM\build\soem.lib;C:\git\ethercatConfigurator_2.0\SOEM\oshw\win32\wpcap\Lib\Packet.lib;Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;d3d9.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;d3d9.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Programmierung\boost\Boost_1_76_0_0\Stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
