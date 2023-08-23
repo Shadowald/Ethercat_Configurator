@@ -230,7 +230,7 @@ int main(int, char**)
             // We specify a default position/size in case there's no data in the .ini file.
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
             ImGui::SetNextWindowPos(ImVec2(2, 4), ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(855, 756), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(907, 756), ImGuiCond_FirstUseEver);
 
             ImGui::Begin(_("Configurator"), 0, ImGuiWindowFlags_MenuBar);
 
@@ -486,11 +486,11 @@ int main(int, char**)
                 ImGui::TableSetupColumn(_("Alias"));
                 ImGui::TableSetupColumn(_("Obits"));
                 ImGui::TableSetupColumn(_("Ibits"));
-                ImGui::TableSetupColumn(_("Device Type"), ImGuiTableColumnFlags_WidthFixed, 110.0f);
+                ImGui::TableSetupColumn(_("Device Type"), ImGuiTableColumnFlags_WidthFixed, 160.0f);
                 ImGui::TableSetupColumn(_("First Chute"));
                 ImGui::TableSetupColumn(_("Last Chute"));
                 ImGui::TableHeadersRow();
-
+                
                 for (int row = 0; row < ecatConfigurator.currentDevices.size(); row++)
                 {
                     ImGui::PushID(row);
@@ -514,14 +514,19 @@ int main(int, char**)
                     ImGui::Text("%d", ecatConfigurator.currentDevices[row].Ibits);
                     ImGui::TableNextColumn();
                     ImGui::PushItemWidth(-FLT_MIN);
-                    const char* types[] = { _("NotDefined"), _("Chutes"), _("FlapsLamps"), _("Scales"), _("Inverter") };
+                    // Had to create a vector of strings to then populate a vector of const char*s in order for combo box translation to work correctly
+                    std::vector<std::string> items = { _("NotDefined"), _("Chutes"), _("FlapsLamps"), _("Scales"), _("Inverter") };
+                    std::vector<const char*> types;
+                    for (const auto& str : items) {
+                        types.push_back(str.c_str());
+                    }
                     static int item_current_idx2 = 0; // Here we store our selection data as an index.
                     const char* combo_preview_value2 = types[static_cast<int>(ecatConfigurator.currentDevices[row].deviceType)];  // Pass in the preview value visible before opening the combo (it could be anything)
                     //ImGuiStyle::FramePadding = ImVec2(270, 40);
                     if (ImGui::BeginCombo("", combo_preview_value2))
                     {
 
-                        for (int n = 0; n < IM_ARRAYSIZE(types); n++)
+                        for (int n = 0; n < types.size(); n++)
                         {
                             const bool is_selected = (item_current_idx2 == n);
                             if (ImGui::Selectable(types[n], is_selected))
@@ -682,7 +687,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int numKeypad(int input, bool* p_open)
 {
-    ImGui::SetNextWindowPos(ImVec2(858, 539), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(911, 539), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(152, 221), ImGuiCond_FirstUseEver);
 
     ImGui::Begin(_("Keypad"), p_open);
