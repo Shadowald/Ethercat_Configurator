@@ -182,6 +182,7 @@ int main(int, char**)
 
             ImGui::Begin(_("Error with the Bus"), &done, ImGuiWindowFlags_MenuBar);
 
+            // Test: check that language changes
             // Menu Bar
             if (ImGui::BeginMenuBar())
             {
@@ -200,6 +201,7 @@ int main(int, char**)
                         "This means either there are no adapters with devices on the Bus or ReadBus.exe failed to run.\n"
                         "You can now either load a ethercatBus.json saved elsewhere on the system or close the program\n"));
 
+            // Test: see that loadBus is true and fileDialogLoad opens
             if (ImGui::Button(_("Load File"), ImVec2(100, 40)))
             {
                 fileDialogLoad.Open();
@@ -208,6 +210,7 @@ int main(int, char**)
 
             ImGui::SameLine();
 
+            // Test: check that program closes
             if (ImGui::Button(_("Close Program"), ImVec2(140, 40)))
                 done = true;
 
@@ -234,6 +237,7 @@ int main(int, char**)
 
             ImGui::Begin(_("Configurator"), 0, ImGuiWindowFlags_MenuBar);
 
+            // Test: check that language changes
             // Menu Bar
             if (ImGui::BeginMenuBar())
             {
@@ -306,14 +310,14 @@ int main(int, char**)
                 }
             }            
 
+            // Test: see that drop menu items for adapters changes
             ImGui::Checkbox(_("List All Adapters"), &showAllAdapters);
 
-            if (key.size())
-                ImGui::Checkbox(_("Assign Chutes Forward"), &ecatConfigurator.adapterChutesDirection);
-
+            // Test: check that init is run again
             if (ImGui::Button(_("Read the Bus Again"), ImVec2(230, 40)))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 ecatConfigurator.init();
-            ImGui::SameLine();                        
+            ImGui::SameLine();       
+            // Test: see that loadBus is true and fileDialogLoad opens
             if (ImGui::Button(_("Load Bus File"), ImVec2(150, 40)))                                // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 fileDialogLoad.Open();
@@ -337,6 +341,7 @@ int main(int, char**)
                     
             static ImGuiTableFlags flags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_NoHostExtendX;
 
+            // Test: Check that information is correctly displayed
             if (ImGui::BeginTable(_("Selected Adapter"), 8, flags))
             {
                 // Display headers so we can inspect their interaction with borders.
@@ -381,6 +386,7 @@ int main(int, char**)
 
             ImGui::Text("");
 
+            // Test: check that current* variables are set correctly
             if (ImGui::Button(_("Transfer All Settings to be Written"), ImVec2(330, 40)))           // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ecatConfigurator.currentDevices.clear();
@@ -392,10 +398,12 @@ int main(int, char**)
             if (loaded)
             {
                 ImGui::SameLine();
+                //Test: check that name is changed
                 if (ImGui::Button(_("Transfer Adapter Name to be Written"), ImVec2(270, 40)))
                     ecatConfigurator.currentAdapterName = key;
             }
 
+            // Test: check that load window opens
             if (ImGui::Button(_("Load Settings"), ImVec2(160, 40)))                                 // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 fileDialogLoad.Open();
@@ -405,6 +413,7 @@ int main(int, char**)
             if (loaded)                       // Buttons return true when clicked (most widgets return true when edited/activated)
             {
                 ImGui::SameLine();
+                // Test: check that save window opens
                 if (ImGui::Button(_("Save Settings"), ImVec2(180, 40)))
                 {
                     fileDialogWrite.Open();
@@ -413,6 +422,7 @@ int main(int, char**)
 
             }
 
+            // Test: check "save complete" window opens after saving
             // Written this way so that the file browser window remains open until the user is done with it
             if (write)
             {
@@ -430,6 +440,7 @@ int main(int, char**)
             }
             else if (load)
             {
+                //Test: if error, check that error window opens
                 fileDialogLoad.Display();
                 if (fileDialogLoad.HasSelected())
                 {
@@ -443,7 +454,7 @@ int main(int, char**)
                 }
             }
 
-            // Window to let user know the file has been written
+            // A window to let user know the file has been written
             if (written)
             {
                 ImGui::SetNextWindowPos(ImVec2(90, 381), ImGuiCond_FirstUseEver);
@@ -468,8 +479,12 @@ int main(int, char**)
                 ImGui::End();
             }
 
+            // Test: check that adapterChutesDirection value changes
             if (loaded)
             {
+                if (key.size())
+                    ImGui::Checkbox(_("Assign Chutes Forward"), &ecatConfigurator.adapterChutesDirection);
+
                 ImGui::Text("");
                 ImGui::Text(_("Data to be Written:"));
                 ImGui::Text(_("Adapter Name: %s"), ecatConfigurator.currentAdapterName.c_str());
@@ -522,7 +537,7 @@ int main(int, char**)
                     }
                     static int item_current_idx2 = 0; // Here we store our selection data as an index.
                     const char* combo_preview_value2 = types[static_cast<int>(ecatConfigurator.currentDevices[row].deviceType)];  // Pass in the preview value visible before opening the combo (it could be anything)
-                    //ImGuiStyle::FramePadding = ImVec2(270, 40);
+                    //Test: check combo box works correctly
                     if (ImGui::BeginCombo("", combo_preview_value2))
                     {
 
@@ -542,6 +557,7 @@ int main(int, char**)
                         ImGui::EndCombo();
                     }                
                     ImGui::TableNextColumn();
+                    //Test: check that keypad opens when input box is selected
                     ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::PushID(8);
                     (ImGui::InputInt("", &ecatConfigurator.currentDevices[row].firstChute, 0));
@@ -690,6 +706,7 @@ int numKeypad(int input, bool* p_open)
     ImGui::SetNextWindowPos(ImVec2(911, 539), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(152, 221), ImGuiCond_FirstUseEver);
 
+    //Test: check that buttons work correctly
     ImGui::Begin(_("Keypad"), p_open);
 
     if (ImGui::Button("<x", ImVec2(40, 40)))        // Buttons return true when clicked (most widgets return true when edited/activated)

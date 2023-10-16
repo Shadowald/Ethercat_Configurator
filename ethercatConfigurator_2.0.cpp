@@ -34,9 +34,12 @@ CEthercatConfigurator::~CEthercatConfigurator()
 // Currently only reads in a file from set path and does not check if said file exists
 void CEthercatConfigurator::writeBackup(std::string pwd)
 {
-    boost::property_tree::ptree root;    
+    boost::property_tree::ptree root;
+
+    // This try..catch prevents failure when no file previously exists to create a backup from
     try
     {
+        // Test: see that file was read and new file was written
         boost::property_tree::read_json(pwd + "\\ethercat.json", root);
         boost::property_tree::write_json(pwd + "\\ethercatBackup.json", root);
     }
@@ -92,17 +95,19 @@ void CEthercatConfigurator::writeSettings(std::string pwd)
 
 void CEthercatConfigurator::init()
 {
+    // Test: Check that these are cleared
     allAdapters.clear();
     adapterDevices.clear();
     adapterDevices.clear();
 
+    // Test: Check that program is executed
     const HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
     ShellExecute(NULL, L"open", L"ReadBus.exe", NULL, NULL, SW_SHOW);
 
     boost::property_tree::ptree root;
-    //TODO: change to read in any json file
     try
     {
+        // Test: See that file was read
         boost::property_tree::read_json("ethercatBus.json", root);
     }
     catch(const std::exception e)
@@ -116,6 +121,7 @@ void CEthercatConfigurator::init()
         std::vector<DEVICE> devices;
         allAdapters.push_back(adapter.second.get<std::string>("name"));
 
+        // Test: See that devices exist
         // Only adapters that have devices are added to the maps, with the adapter name being the key
         try
         {
@@ -138,6 +144,7 @@ void CEthercatConfigurator::init()
 
         catch (const std::exception e)
         {
+            // Test: See that no devices exist
             std::string tempSt = adapter.second.get<std::string>("name");
             printf("There are no devices connected to adapter %s.\nMoving on to next adapter now.\n", (&tempSt)->c_str());
             //const char* temp = adapter.second.get<const char*>("name");
@@ -145,6 +152,7 @@ void CEthercatConfigurator::init()
     }
 }
 
+// Same tests for other init?
 void CEthercatConfigurator::init(std::string filename)
 {
     allAdapters.clear();
@@ -200,14 +208,18 @@ bool CEthercatConfigurator::loadSettings(std::string filename)
     // Get adapter configuration from file for comparison  
     boost::property_tree::ptree root;
     std::vector<DEVICE> devices;
-    //boost::property_tree::read_json("ethercat.json", root);
+
+    // Test: See that file was read
     boost::property_tree::read_json(filename, root);
 
+    // Try..catch used to prevent failure if incorrect information is in loaded json file
     try
     {
+        // Test: See that values are correct
         currentAdapterName = root.get<std::string>("adapter.name");
         adapterChutesDirection = root.get<bool>("adapter.Chutes.AssignForward");
-    
+        
+        // Test: See that devices exist
         // Populates devicesFromFile with the devices written in the json file
         for (boost::property_tree::ptree::value_type& device_pt : root.get_child("adapter.devices"))
         {
@@ -268,9 +280,9 @@ void CEthercatConfigurator::transferSettings(std::string ifname)
     currentDevices = devices;
 }
 
+// Get rid of this function at some point; just legacy code that was used to test back-end functions before UI was made
 void CEthercatConfigurator::runEthercatConfigurator()
-{
-    // Get rid of this function at some point; just legacy code that was used to test back-end functions
+{    
     printf("\nEthercat Configurator 2.0\n");
     printf("init started\n");
     init();
