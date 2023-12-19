@@ -38,9 +38,9 @@ public:
     ~ReadBusTestClass() {}
 
     int wrapStartConfigEC(char* ifname) { return startConfigEC(ifname); }
-    int wrapCheckStates() { return checkStates(); }
+    int wrapCheckStates(ec_slavet* slaves, int slavecnt) { return checkStates(slaves, slavecnt); }
     void wrapReadStates() { return readStates(); }
-    boost::property_tree::ptree wrapCreateDevicesTree() { createDevicesTree(); }
+    boost::property_tree::ptree wrapCreateDevicesTree(ec_slavet* slaves, int slavecnt) { createDevicesTree(slaves, slavecnt); }
 };
 
 TEST(ReadBusTest, StartConfigECTest) {

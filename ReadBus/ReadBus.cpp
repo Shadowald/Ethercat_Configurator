@@ -72,7 +72,7 @@ int ReadBus::checkStates(ec_slavet* slaves, int slavecnt)
             if (slaves[i].state != EC_STATE_SAFE_OP)
             {
                 printf("Device %d State=%2x StatusCode=%4x : %s\n",
-                    i, slaves[i].state, slaves[i].ALstatuscode, ec_ALstatuscode2string(slaves[i].ALstatuscode));
+                    i, slaves[i].state, slaves[i].ALstatuscode, ethercatWrapper_->ec_ALstatuscode2string(slaves[i].ALstatuscode));
             }
         }
 
