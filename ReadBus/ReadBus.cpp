@@ -59,20 +59,20 @@ int ReadBus::startConfigEC(char* ifname)
     }
 }
 
-int ReadBus::checkStates()
+int ReadBus::checkStates(ec_slavet* slaves, int slavecnt)
 {
     /* wait for all devices to reach SAFE_OP state */
     ethercatWrapper_->ec_statecheck(0, EC_STATE_SAFE_OP, EC_TIMEOUTSTATE * 3);
-    if (ec_slave[0].state != EC_STATE_SAFE_OP)
+    if (slaves[0].state != EC_STATE_SAFE_OP)
     {
         printf("Not all devices reached safe operational state.\n");
         ethercatWrapper_->ec_readstate();
-        for (int i = 1; i <= ec_slavecount; i++)
+        for (int i = 1; i <= slavecnt; i++)
         {
-            if (ec_slave[i].state != EC_STATE_SAFE_OP)
+            if (slaves[i].state != EC_STATE_SAFE_OP)
             {
                 printf("Device %d State=%2x StatusCode=%4x : %s\n",
-                    i, ec_slave[i].state, ec_slave[i].ALstatuscode, ec_ALstatuscode2string(ec_slave[i].ALstatuscode));
+                    i, slaves[i].state, slaves[i].ALstatuscode, ec_ALstatuscode2string(slaves[i].ALstatuscode));
             }
         }
 
@@ -99,26 +99,26 @@ void ReadBus::readStates()
     }
 }
 
-boost::property_tree::ptree ReadBus::createDevicesTree()
+boost::property_tree::ptree ReadBus::createDevicesTree(ec_slavet* slaves, int slavecnt)
 {
     boost::property_tree::ptree tree;
     boost::property_tree::ptree devices;
 
     printf("Populating property tree for devices\n");
-    for (int cnt = 1; cnt <= ec_slavecount; cnt++)
+    for (int cnt = 1; cnt <= slavecnt; cnt++)
     {
         std::string device = "device" + std::to_string(cnt);
         boost::property_tree::ptree child;
 
         /* Relevant device info */
-        child.put("name", ec_slave[cnt].name);
-        child.put("eep.man", ec_slave[cnt].eep_man);
-        child.put("eep.id", ec_slave[cnt].eep_id);
-        child.put("address.configured", ec_slave[cnt].configadr);
-        child.put("address.alias", ec_slave[cnt].aliasadr);
-        child.put("index", ec_slave[cnt].configindex);
-        child.put("bits.output", ec_slave[cnt].Obits);
-        child.put("bits.input", ec_slave[cnt].Ibits);
+        child.put("name", slaves[cnt].name);
+        child.put("eep.man", slaves[cnt].eep_man);
+        child.put("eep.id", slaves[cnt].eep_id);
+        child.put("address.configured", slaves[cnt].configadr);
+        child.put("address.alias", slaves[cnt].aliasadr);
+        child.put("index", slaves[cnt].configindex);
+        child.put("bits.output", slaves[cnt].Obits);
+        child.put("bits.input", slaves[cnt].Ibits);
 
         devices.push_back(std::make_pair("", child));
     }
@@ -151,9 +151,9 @@ int ReadBus::run()
 
         if (startConfigEC(adapter->name) == 0)
         {
-            checkStates();
+            checkStates(ec_slave, ec_slavecount);
             //readStates();
-            devices = createDevicesTree();
+            devices = createDevicesTree(ec_slave, ec_slavecount);
             child.add_child("devices", devices);
         }
         children.push_back(std::make_pair("", child));

@@ -26,8 +26,8 @@ public:
 
 protected:
 	int startConfigEC(char* ifname);
-	int checkStates();
+	int checkStates(ec_slavet* slaves, int slavecnt);
 	void readStates();
-	boost::property_tree::ptree createDevicesTree();
+	boost::property_tree::ptree createDevicesTree(ec_slavet* slaves, int slavecnt);
 };
 #endif
