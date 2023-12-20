@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\git\ethercatConfigurator_2.0\googletest\googletest\include;C:\git\ethercatConfigurator_2.0\googletest\googlemock\include;C:\git\ReadBus;$(IncludePath)</IncludePath>
+    <IncludePath>C:\git\ethercatConfigurator_2.0\googletest\googletest\include;C:\git\ethercatConfigurator_2.0\googletest\googlemock\include;C:\git\ethercatConfigurator_2.0\ReadBus;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -115,7 +115,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\git\ethercatConfigurator_2.0\ReadBus\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\git\ethercatConfigurator_2.0\ReadBus\Release\ReadBus.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\oshw\win32\wpcap\Lib\wpcap.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\build\soem.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\oshw\win32\wpcap\Lib\Packet.lib;Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;C:\git\ethercatConfigurator_2.0\googletest\build\lib\Release\gmock.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\git\ethercatConfigurator_2.0\Release\ReadBus.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\oshw\win32\wpcap\Lib\wpcap.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\build\soem.lib;C:\git\ethercatConfigurator_2.0\ReadBus\SOEM\oshw\win32\wpcap\Lib\Packet.lib;Ws2_32.lib;Winmm.lib;legacy_stdio_definitions.lib;C:\git\ethercatConfigurator_2.0\googletest\build\lib\Release\gmock.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

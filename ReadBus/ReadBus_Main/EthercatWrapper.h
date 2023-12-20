@@ -29,12 +29,9 @@ public:
 	int ec_readstate() override {
 		return ::ec_readstate();
 	}
-	char* ec_ALstatuscode2string(uint16 ALstatuscode) override {
-		return ::ec_ALstatuscode2string(ALstatuscode);
-	}
 	void ec_close() override {
 		return ::ec_close();
-	}
+	}	
 };
 
 //virtual int ec_init(const char* ifname) = 0;

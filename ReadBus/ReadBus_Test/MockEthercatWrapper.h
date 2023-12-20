@@ -13,7 +13,6 @@ public:
 	MOCK_METHOD(uint8_t, ec_configdc, (), (override));
 	MOCK_METHOD(uint16_t, ec_statecheck, (uint16_t, uint16_t, int), (override));
 	MOCK_METHOD(int, ec_readstate, (), (override));
-	MOCK_METHOD(char*, ec_ALstatuscode2string, (uint16_t), (override));
 	MOCK_METHOD(void, ec_close, (), (override));
 };
 
