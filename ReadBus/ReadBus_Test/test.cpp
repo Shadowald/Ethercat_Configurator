@@ -72,22 +72,26 @@ TEST(ReadBusTest, StartConfigECTest) {
     EXPECT_EQ(0, reader.wrapStartConfigEC(adapter->name));
 }
 
-//TEST(ReadBusTest, CheckStatesTest) {
-//    // With MockG use adapter with device that wont reach safe OP
-//    EXPECT_EQ(1, checkStates());
-//    // With MockG use adapter with device that will reach safe OP
-//    EXPECT_EQ(0, checkStates());
-//}
-//
-//TEST(ReadBusTest, CreateDeviceTreeTest) {
-//    // With MockG use adapter with set number of devices
-//    EXPECT_EQ(1, createDevicesTree().size());
-//    EXPECT_NE(0, createDevicesTree().size());
-//    boost::property_tree::ptree devices;
-//    devices = createDevicesTree();
-//    // Test that devices have been correctly saved, or use MockG and check coded strings from that
-//    //EXPECT_STREQ(ec_slave[0].name, devices[0].name);
-//}
+TEST(ReadBusTest, CheckStatesTest) {
+    ec_slavet mock[2];
+    int slavecnt = 1;
+
+    mock[0].state = EC_STATE_ERROR;
+    mock[1].state = EC_STATE_ERROR;
+    mock[1].ALstatuscode = 0x0001;
+
+    MockEthercatWrapper mock_ethercatwrapper;
+    EXPECT_CALL(mock_ethercatwrapper, ec_statecheck(_, _, _))
+        .Times(2);
+    EXPECT_CALL(mock_ethercatwrapper, ec_readstate())
+        .Times(1);
+
+    ReadBusTestClass reader(&mock_ethercatwrapper);
+    EXPECT_EQ(1, reader.wrapCheckStates(mock, slavecnt));
+
+    mock[0].state = EC_STATE_SAFE_OP;
+    EXPECT_EQ(0, reader.wrapCheckStates(mock, slavecnt));
+}
 
 // Should we have a test to confirm that the json file is written?
 // If so how would we test for that?
