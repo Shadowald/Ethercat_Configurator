@@ -40,7 +40,7 @@ public:
     int wrapStartConfigEC(char* ifname) { return startConfigEC(ifname); }
     int wrapCheckStates(ec_slavet* slaves, int slavecnt) { return checkStates(slaves, slavecnt); }
     void wrapReadStates() { return readStates(); }
-    boost::property_tree::ptree wrapCreateDevicesTree(ec_slavet* slaves, int slavecnt) { createDevicesTree(slaves, slavecnt); }
+    boost::property_tree::ptree wrapCreateDevicesTree(ec_slavet* slaves, int slavecnt) { return createDevicesTree(slaves, slavecnt); }
 };
 
 TEST(ReadBusTest, StartConfigECTest) {
@@ -91,6 +91,54 @@ TEST(ReadBusTest, CheckStatesTest) {
 
     mock[0].state = EC_STATE_SAFE_OP;
     EXPECT_EQ(0, reader.wrapCheckStates(mock, slavecnt));
+}
+
+TEST(ReadBusTest, CreateDeviceTreeTest) {
+    ec_slavet mock[2];
+    int slavecnt = 1;
+
+    char name[41] = "A Fake Device";
+    strncpy(mock[1].name, name, 41);
+    mock[1].eep_man = 12;
+    mock[1].eep_id = 123456;
+    mock[1].configadr = 1234;
+    mock[1].aliasadr = 0;
+    mock[1].configindex = 0;
+    mock[1].Obits = 16;
+    mock[1].Ibits = 4;
+
+    MockEthercatWrapper mock_ethercatwrapper;
+    ReadBusTestClass reader(&mock_ethercatwrapper);
+    boost::property_tree::ptree devices;
+    devices = reader.wrapCreateDevicesTree(mock, slavecnt);
+    // With MockG use adapter with set number of devices
+    EXPECT_EQ(1, devices.size());
+    EXPECT_NE(0, devices.size());
+
+    // Test that devices have been correctly saved, or use MockG and check coded strings from that
+    EXPECT_EQ(mock[1].name, devices.get<std::string>(".name"));
+    EXPECT_NE("A Very Real Slave", devices.get<std::string>(".name"));
+
+    EXPECT_EQ(mock[1].eep_man, devices.get<int>(".eep.man"));
+    EXPECT_NE(98, devices.get<int>(".eep.man"));
+
+    EXPECT_EQ(mock[1].eep_id, devices.get<int>(".eep.id"));
+    EXPECT_NE(987654, devices.get<int>(".eep.id"));
+
+    EXPECT_EQ(mock[1].configadr, devices.get<int>(".address.configured"));
+    EXPECT_NE(9876, devices.get<int>(".address.configured"));
+
+    EXPECT_EQ(mock[1].aliasadr, devices.get<int>(".address.alias"));
+    EXPECT_NE(9, devices.get<int>(".address.alias"));
+
+    EXPECT_EQ(mock[1].configindex, devices.get<int>(".index"));
+    EXPECT_NE(9, devices.get<int>(".index"));
+
+    EXPECT_EQ(mock[1].Obits, devices.get<int>(".bits.output"));
+    EXPECT_NE(32, devices.get<int>(".bits.output"));
+
+    EXPECT_EQ(mock[1].Ibits, devices.get<int>(".bits.input"));
+    EXPECT_NE(8, devices.get<int>(".bits.input"));
 }
 
 // Should we have a test to confirm that the json file is written?
